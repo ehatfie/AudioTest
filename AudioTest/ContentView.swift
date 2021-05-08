@@ -10,59 +10,69 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
+    
+    let manager = AudioManager()
+    @State var isRecording = false
+    
     var body: some View {
-        List {
-            ForEach(items) { item in
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-            }
-            .onDelete(perform: deleteItems)
+        VStack {
+            Button(action: recordingButtonOnPress, label: {
+                let labelText = isRecording ? "Stop" : "Start"
+                Text(labelText + " recording")
+            })
+            .padding()
+            .border(Color.black, width: 1)
+            Button(action: playbackButtonOnPress, label: {
+                Text("play recording")
+            })
+            .padding()
+            .border(Color.black, width: 1)
+            HStack {
+                Button(action: playAudioButtonOnPress, label: {
+                    Text("Play Player")
+                })
+                .padding()
+                .border(Color.black, width: 1)
+                Button(action: playAudioButtonOnPress, label: {
+                    Text("Play Buffer")
+                })
+                .padding()
+                .border(Color.black, width: 1)
+            }.padding()
+            
         }
-        .toolbar {
-            #if os(iOS)
-            EditButton()
-            #endif
-
-            Button(action: addItem) {
-                Label("Add Item", systemImage: "plus")
+    }
+    
+    func recordingButtonOnPress() {
+        if isRecording {
+            manager.stopRecording()
+            isRecording = false
+        } else {
+            manager.startRecording { status in
+                isRecording = status
             }
         }
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
+    
+    func playbackButtonOnPress() {
+        manager.startPlayback()
     }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
+    
+    func playAudioButtonOnPress() {
+        print("playt audio on press")
+        manager.playAudio()
+    }
+    
+    func playAudioBufferOnPress() {
+        manager.playBuffer()
+    }
+    
+    func startRecording() {
+        
+    }
+    
+    func stopRecording() {
+        
     }
 }
 
