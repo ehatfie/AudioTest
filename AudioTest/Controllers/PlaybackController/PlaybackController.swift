@@ -37,6 +37,8 @@ class PlaybackController: NSObject {
     var stopIndicatorPlayer: AVAudioPlayer? // dont need
     var audioIndicatorPlayer: AVAudioPlayer?
     
+    var receivedBufferCount = 0
+    
     override init() {
         super.init()
         
@@ -125,15 +127,29 @@ class PlaybackController: NSObject {
                     self?.audioPlaybackDidComplete()
                 }
             }
-            //let bufferFormat = buffer.format
-            //let ic = self.bufferPlayer.outputFormat(forBus: 0).channelCount
-            
             index += 1
             
             //print("time: \(tim)")
             self.bufferPlayer.scheduleBuffer(buffer, completionCallbackType: .dataPlayedBack, completionHandler: completion)
         }
         
+    }
+    
+    func loadBuffer(_ buffer: AVAudioPCMBuffer, final: Bool) {
+        var completion: AVAudioPlayerNodeCompletionHandler? = nil
+        
+        if final {
+            completion = {[weak self] _ in
+                self?.audioPlaybackDidComplete()
+            }
+        } else {
+            completion = {[weak self] _ in
+                print("buffer: \(self?.receivedBufferCount)")
+            }
+        }
+        
+        self.bufferPlayer.scheduleBuffer(buffer, at: nil, completionCallbackType: .dataPlayedBack, completionHandler: completion)
+        self.receivedBufferCount += 1
     }
     
     func playBuffers() {
@@ -155,6 +171,31 @@ class PlaybackController: NSObject {
         self.bufferPlayer.reset()
         
         AVAudioSession.setActive(false)
+    }
+    
+    func playAnother() {
+        self.startEngine()
+        
+        do {
+            let file1 = try AVAudioFile(forReading: startIndicatorUrl!)
+            let file2 = try AVAudioFile(forReading: stopIndicatorUrl!)
+            
+            let fileSampleRate = file2.fileFormat.sampleRate
+            let scheduledTime = AVAudioTime(sampleTime: .zero, atRate: fileSampleRate)
+            print("scheduledTime: \(scheduledTime)")
+            //var playTime: AVAudioTime? = self.bufferPlayer.isPlaying ? nil : scheduledTime
+            
+            self.bufferPlayer.scheduleFile(file1, at: scheduledTime, completionCallbackType: .dataPlayedBack, completionHandler: {_ in
+                print("file 1 playback")
+            })
+            
+            self.bufferPlayer.scheduleFile(file1, at: nil, completionCallbackType: .dataPlayedBack, completionHandler: {_ in
+                print("file 2 playback")
+            })
+            self.bufferPlayer.play()
+        } catch let e {
+            print("Play another error \(e)")
+        }
     }
     
 }

@@ -13,9 +13,29 @@ struct ContentView: View {
     
     let manager = AudioManager()
     @State var isRecording = false
+    @State var buttonPressed = false
     
     var body: some View {
         VStack {
+            Text("HELLO")
+                .foregroundColor(Color.white)
+                .padding(10)
+                .background(Color.gray)
+                .cornerRadius(6)
+                .padding(10)
+                .onTouchDownUpEvent(changeState: { (buttonState) in
+                        if buttonState == .pressed {
+                            print("button pressed")
+                            buttonPressed = true
+                            manager.playAnother()
+                            //self.startRecording()
+                        } else {
+                            print("button not pressed")
+                            self.stopRecording()
+                            buttonPressed = false
+                        }
+                    })
+                .scaleEffect(buttonPressed ? 0.9 : 1).animation(.easeOut(duration: 0.2))
             Button(action: recordingButtonOnPress, label: {
                 let labelText = isRecording ? "Stop" : "Start"
                 Text(labelText + " recording")
@@ -27,6 +47,13 @@ struct ContentView: View {
             })
             .padding()
             .border(Color.black, width: 1)
+            .modifier(TouchDownUpEventModifier(changeState: { (buttonState) in
+                    if buttonState == .pressed {
+                        buttonPressed = true
+                    } else {
+                        buttonPressed = false
+                    }
+                }))
             HStack {
                 Button(action: playAudioButtonOnPress, label: {
                     Text("Play Player")
@@ -68,11 +95,13 @@ struct ContentView: View {
     }
     
     func startRecording() {
-        
+//        manager.startRecording { status in
+//            isRecording = status
+//        }
     }
     
     func stopRecording() {
-        
+        //manager.stopRecording()
     }
 }
 
@@ -86,5 +115,12 @@ private let itemFormatter: DateFormatter = {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    }
+}
+
+
+public extension View {
+    func onTouchDownUpEvent(changeState: @escaping (ButtonState) -> Void) -> some View {
+        modifier(TouchDownUpEventModifier(changeState: changeState))
     }
 }

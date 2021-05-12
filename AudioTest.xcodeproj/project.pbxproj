@@ -26,6 +26,7 @@
 		BA16A85326472C800088EB87 /* AudioController+Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA16A85226472C800088EB87 /* AudioController+Playback.swift */; };
 		BA16A85526472CD30088EB87 /* TimeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA16A85426472CD30088EB87 /* TimeTracker.swift */; };
 		BA16A857264732580088EB87 /* audioStart.wav in Resources */ = {isa = PBXBuildFile; fileRef = BA16A856264732580088EB87 /* audioStart.wav */; };
+		BA16A85A264B67B30088EB87 /* ButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA16A859264B67B30088EB87 /* ButtonState.swift */; };
 		BA591976264222D200C146D4 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA591975264222D200C146D4 /* Date+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 		BA16A85226472C800088EB87 /* AudioController+Playback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioController+Playback.swift"; sourceTree = "<group>"; };
 		BA16A85426472CD30088EB87 /* TimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTracker.swift; sourceTree = "<group>"; };
 		BA16A856264732580088EB87 /* audioStart.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audioStart.wav; sourceTree = "<group>"; };
+		BA16A859264B67B30088EB87 /* ButtonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonState.swift; sourceTree = "<group>"; };
 		BA591975264222D200C146D4 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,6 +125,7 @@
 		BA0467B52642161A00156AB5 /* AudioTest */ = {
 			isa = PBXGroup;
 			children = (
+				BA16A858264B679A0088EB87 /* Views */,
 				BA16A84F26471FD60088EB87 /* Manager */,
 				BA16A84726422EDC0088EB87 /* Resources */,
 				BA0467FF2642184700156AB5 /* Helpers */,
@@ -234,6 +237,14 @@
 				BA16A85026471FE00088EB87 /* AudioManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		BA16A858264B679A0088EB87 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BA16A859264B67B30088EB87 /* ButtonState.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -377,6 +388,7 @@
 				BA0467B92642161A00156AB5 /* ContentView.swift in Sources */,
 				BA0468012642188E00156AB5 /* AudioSessionHelpers.swift in Sources */,
 				BA16A85526472CD30088EB87 /* TimeTracker.swift in Sources */,
+				BA16A85A264B67B30088EB87 /* ButtonState.swift in Sources */,
 				BA0467B72642161A00156AB5 /* AudioTestApp.swift in Sources */,
 				BA16A85326472C800088EB87 /* AudioController+Playback.swift in Sources */,
 				BA16A85126471FE00088EB87 /* AudioManager.swift in Sources */,

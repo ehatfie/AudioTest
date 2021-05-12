@@ -43,4 +43,8 @@ class AudioManager {
     func playBuffer() {
         controller.playBuffer()
     }
+    
+    func playAnother() {
+        controller.playAnother()
+    }
 }

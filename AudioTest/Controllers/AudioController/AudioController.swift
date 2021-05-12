@@ -68,5 +68,6 @@ extension AudioController: AudioRecordingControllerDelegate {
     
     func dataAvailable(buffer: AVAudioPCMBuffer, initial: Bool, final: Bool) {
         // pass to playback controller
+        self.playbackController.loadBuffer(buffer, final: final)
     }
 }

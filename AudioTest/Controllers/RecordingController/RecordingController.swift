@@ -152,7 +152,6 @@ class RecordingController: NSObject {
         self.recordingStartIndicator?.play()
     }
     
-    
     func stopRecording() {
         self.shouldStop = true
     }

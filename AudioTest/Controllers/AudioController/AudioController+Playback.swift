@@ -10,9 +10,13 @@ import AVFoundation
 
 extension AudioController {
     
+    func playAnother() {
+        self.setupIfNecessary()
+        self.playbackController.playAnother()
+    }
+    
     func playAudio() {
         print("play audio")
-        
         self.setupIfNecessary()
         self.playbackController.playAudioIndicator()
     }
